@@ -23,9 +23,66 @@ main {
   height: 100vh;
   min-width: 70%;
   min-height: 100%;
+  overflow-y: scroll;
 }
+
 
 .panel {
   position: fixed;
   z-index: 2;
 }
+
+
+.editor { padding: 25px; }
+.editor, .editor>div { height: fit-content; }
+textarea {
+  width: 100%;
+  height: fit-content;
+  min-height: 150px;
+
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+}
+.text-block { padding: 25px; }
+.text-block p {
+  white-space: pre;
+  word-wrap: break-word;
+  word-break: normal;
+}
+
+.editor-spacer { border: 1px inset transparent; }
+.editor-spacer:hover { border: 1px inset salmon; }
+.editor-spacer, .spacer-block { min-width: fit-content; min-height: fit-content; }
+.spacer-size { width: 100px; }
+.spacer-unit { width: 35px; }
+
+.gallery-block {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-rows: 75px;
+}
+.image-preview {
+  width: 12em;
+}
+
+
+.vrtCC, .vrtTL, .vrtTR, .vrtTC, .vrtBT, .vrtEV, .vrtCL, .hrzCC, .hrzCR, .hrzTL, .hrzTR, .hrzTC, .hrzBT, .hrzEV {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.vrtCC, .hrzCC {
+  justify-content: center;
+  align-items: center;
+}
+
+.vrtTC, .hrzCR { align-items: center; }
+.vrtTR { align-items: flex-end; }
+.hrzCC, .hrzCR, .hrzTL, .hrzTR, .hrzTC, .hrzBT, .hrzEV { flex-direction: row; }
+.hrzCR, .hrzTR { justify-content: flex-end; }
+.vrtCL, .hrzTC { justify-content: center; }
+.hrzBT, .vrtBT { justify-content: space-between; }
+.hrzEV, .vrtEV { justify-content: space-evenly; }

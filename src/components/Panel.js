@@ -1,11 +1,11 @@
 import React from 'react';
-import Index from '../components/Index';
-import Text from '../components/Text';
-import Image from '../components/Image';
-import Gallery from '../components/Gallery';
-import Social from '../components/Social';
-import Links from '../components/Links';
-import Spacer from '../components/Spacer';
+import { IndexInput } from '../components/Index';
+import { TextInput, TextBlock } from '../components/Text';
+import { ImageInput } from '../components/Image';
+import { GalleryInput } from '../components/Gallery';
+import { SocialInput } from '../components/Social';
+import { LinksInput } from '../components/Links';
+import { SpacerInput } from '../components/Spacer';
 
 export class Panel extends React.Component {
     constructor(props) {
@@ -51,13 +51,13 @@ export class Editor extends React.Component {
     toggleEditor(data) {
         console.log(this.state.tag)
 
-        if (this.props.type === "index") { return <Index /> }
-        else if (this.props.type === "text") { return <Text /> }
-        else if (this.props.type === "image") { return <Image /> }
-        else if (this.props.type === "gallery") { return <Gallery /> }
-        else if (this.props.type === "social") { return <Social /> }
-        else if (this.props.type === "links") { return <Links /> }
-        else if (this.props.type === "spacer") { return <Spacer /> }
+        if (this.props.type === "index") { return <IndexInput /> }
+        else if (this.props.type === "text") { return <TextInput /> }
+        else if (this.props.type === "image") { return <ImageInput /> }
+        else if (this.props.type === "gallery") { return <GalleryInput /> }
+        else if (this.props.type === "social") { return <SocialInput /> }
+        else if (this.props.type === "links") { return <LinksInput /> }
+        else if (this.props.type === "spacer") { return <SpacerInput /> }
 
 
     }
@@ -65,10 +65,11 @@ export class Editor extends React.Component {
     render() {
 
         if (this.props.tag === this.props.location) {
-            return (<>
-                < button type="button" onClick={this.props.closepanel} >CLOSE</button>
+            return (<div className="editor">
                 {this.toggleEditor()}
-            </>)
+                <button type="button" onClick={this.props.closepanel} >SAVE</button>
+                <button type="button" onClick={this.props.closepanel} >CANCEL</button>
+            </div>)
         }
 
         else { return null; }
