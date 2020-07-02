@@ -67,6 +67,10 @@ textarea {
   width: 12em;
 }
 
+.image-block {
+  overflow: hidden;
+}
+
 
 .vrtCC, .vrtTL, .vrtTR, .vrtTC, .vrtBT, .vrtEV, .vrtCL, .hrzCC, .hrzCR, .hrzTL, .hrzTR, .hrzTC, .hrzBT, .hrzEV {
   display: flex;
