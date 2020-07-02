@@ -1,6 +1,14 @@
 import React from 'react';
 
-class Text extends React.Component {
+export class TextBlock extends React.PureComponent {
+    render() {
+        return (<div className="text-block">
+            <p>{this.props.text}</p>
+        </div>)
+    }
+}
+
+export class TextInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -9,33 +17,53 @@ class Text extends React.Component {
         }
     }
 
-    useTool(e, data) {
+    useTool(data, e) {
+        let
+            text = this.state.text,
+            selected = window.getSelection() + "";
+
+        if (data === "bold") {
+            let boldtext = text.replace(selected, `<b>${selected}</b>`);
+            console.info(boldtext)
+            this.setState({ text: boldtext });
+        }
         console.info("text selected:", window.getSelection().toString());
-        console.info("using tool:", data);
+        console.info("using tool:", this.state.posStart);
     }
-    updateView(e) { this.setState({ text: e.target.value }); }
+    updateCur(e) {
+        this.setState({
+            posStart: e.target.selectionStart,
+            posEnd: e.target.selectionEnd
+        });
+        console.log(`posStart: ${e.target.selectionStart} /// posEnd: ${e.target.selectionEnd}`)
+    }
+    updateView(e) {
+        let
+            // str = this.state.text,
+            // tail = str?.length - this.state.posEnd,
+            textChange = e.target.value;
+
+        // str !== null && 1 < str.length
+        //     ? textChange = `${str.slice(0, this.state.posStart)}${e.target.value.slice(this.state.posStart, tail)}${str.slice(this.state.posEnd, str.length)}` 
+        //     : textChange = e.target.value;
+
+        this.setState({ text: textChange });
+    }
 
     render() {
         return (
-            <div className="editor">
-                <div className="tools">
+            <div className="editor-text">
+                {/* <div className="tools">
                     {
                         this.state.arr?.map(elem => (
                             <button key={elem} type="button" onClick={this.useTool.bind(this, elem)} >{elem}</button>
                         ))
                     }
-                </div>
+                </div> */}
+                {/* onKeyDown={this.updateCur.bind(this)} onClick={this.updateCur.bind(this)} */}
                 <textarea placeholder="click to add text" onChange={this.updateView.bind(this)}>
                 </textarea>
-                <div className="preview">
-
-                    <strong>PREVIEW:</strong>
-                    <div dangerouslySetInnerHTML={{__html: this.state.text}}>
-                    </div>
-                </div>
             </div>
         )
     }
 }
-
-export default Text;
