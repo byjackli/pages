@@ -34,13 +34,8 @@ export class SpacerInput extends React.PureComponent {
     updateUnitWidth(e) { this.setState({ unitWidth: e.target.value }); }
     updateUnitHeight(e) { this.setState({ unitHeight: e.target.value }); }
 
-    render() {
-        return (<div className="editor-spacer"
-            style={{
-                width: `${this.state.width}${this.state.unitWidth}`,
-                height: `${this.state.height}${this.state.unitHeight}`
-            }}
-        >
+    renderSettings() {
+        return (<>
             <div className="hrzTL">
                 <input aria-label="numeric value for width of spacer" className="spacer-size" type="number" placeholder="width" onChange={this.updateWidth.bind(this)} />
                 <input aria-label="unit for width, default is px" className="spacer-unit" type="text" placeholder="unit" onChange={this.updateUnitWidth.bind(this)} />
@@ -49,6 +44,17 @@ export class SpacerInput extends React.PureComponent {
                 <input aria-label="numeric value for height of spacer" className="spacer-size" type="number" placeholder="height" onChange={this.updateHeight.bind(this)} />
                 <input aria-label="unit for height, default is px" className="spacer-unit" type="text" placeholder="unit" onChange={this.updateUnitHeight.bind(this)} />
             </div>
+        </>)
+    }
+
+    render() {
+        return (<div className="editor-spacer"
+            style={{
+                width: `${this.state.width}${this.state.unitWidth}`,
+                height: `${this.state.height}${this.state.unitHeight}`
+            }}
+        >
+            {this.renderSettings()}
         </div>)
     }
 }

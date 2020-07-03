@@ -35,14 +35,17 @@ main {
 
 .editor { padding: 25px; }
 .editor, .editor>div { height: fit-content; }
-textarea {
+.editor-text-box {
   width: 100%;
   height: fit-content;
-  min-height: 150px;
-
-  font-size: inherit;
-  font-weight: inherit;
-  font-family: inherit;
+}
+.editor-text-box {
+  border: 1px inset salmon; 
+}
+[contenteditable][placeholder]:empty:before {
+  background-color: transparent;
+  content: attr(placeholder);
+  color: gray;
 }
 .text-block { padding: 25px; }
 .text-block p {
@@ -66,6 +69,11 @@ textarea {
 .image-preview {
   width: 12em;
 }
+
+.image-block {
+  overflow: hidden;
+}
+.link-block { width: 100%; }
 
 
 .vrtCC, .vrtTL, .vrtTR, .vrtTC, .vrtBT, .vrtEV, .vrtCL, .hrzCC, .hrzCR, .hrzTL, .hrzTR, .hrzTC, .hrzBT, .hrzEV {
