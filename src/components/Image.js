@@ -57,11 +57,11 @@ export class ImageInput extends React.PureComponent {
     renderSettings() {
         return (<>
             <div className="hrzTL">
-                <input aria-label="numeric value for width of spacer" className="spacer-size" type="number" placeholder="width" onChange={this.updateWidth.bind(this)} />
+                <input aria-label="numeric value for width of image container" className="spacer-size" type="number" placeholder="width" onChange={this.updateWidth.bind(this)} />
                 <input aria-label="unit for width, default is px" className="spacer-unit" type="text" placeholder="unit" onChange={this.updateUnitWidth.bind(this)} />
             </div>
             <div className="hrzTL">
-                <input aria-label="numeric value for height of spacer" className="spacer-size" type="number" placeholder="height" onChange={this.updateHeight.bind(this)} />
+                <input aria-label="numeric value for height of image container" className="spacer-size" type="number" placeholder="height" onChange={this.updateHeight.bind(this)} />
                 <input aria-label="unit for height, default is px" className="spacer-unit" type="text" placeholder="unit" onChange={this.updateUnitHeight.bind(this)} />
             </div>
             <select value={this.state.align} onChange={this.updateAlignment.bind(this)}>

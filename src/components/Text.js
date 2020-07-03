@@ -13,7 +13,10 @@ export class TextInput extends React.Component {
         super(props);
         this.state = {
             arr: ["bold", "italics", "strike", "underline", "large", "normal", "small"],
-            text: null
+            text: null,
+            fontSize: 24,
+            fontSizeUnit: "px",
+            align: "center",
         }
     }
 
@@ -41,13 +44,32 @@ export class TextInput extends React.Component {
         let
             // str = this.state.text,
             // tail = str?.length - this.state.posEnd,
-            textChange = e.target.value;
+            textChange = e.target.innerText;
 
         // str !== null && 1 < str.length
         //     ? textChange = `${str.slice(0, this.state.posStart)}${e.target.value.slice(this.state.posStart, tail)}${str.slice(this.state.posEnd, str.length)}` 
         //     : textChange = e.target.value;
 
         this.setState({ text: textChange });
+        console.log("text change", textChange)
+    }
+
+    updateFontSize(e) { this.setState({ fontSize: e.target.value }); }
+    updatefontSizeUnit(e) { this.setState({ fontSizeUnit: e.target.value }); }
+    updateAlignment(e) { this.setState({ align: e.target.value }); }
+
+    renderSettings() {
+        return (<>
+            <div className="hrzTL">
+                <input aria-label="font size" className="spacer-size" type="text" placeholder="font size" onChange={this.updateFontSize.bind(this)} />
+                <input aria-label="unit for font size, default is px" className="spacer-unit" type="text" placeholder="unit" onChange={this.updatefontSizeUnit.bind(this)} />
+            </div>
+            <select value={this.state.align} onChange={this.updateAlignment.bind(this)}>
+                <option value="center" defaultValue>Center Align</option>
+                <option value="left">Left Align</option>
+                <option value="right">Right Align</option>
+            </select>
+        </>)
     }
 
     render() {
@@ -61,8 +83,19 @@ export class TextInput extends React.Component {
                     }
                 </div> */}
                 {/* onKeyDown={this.updateCur.bind(this)} onClick={this.updateCur.bind(this)} */}
-                <textarea placeholder="click to add text" onChange={this.updateView.bind(this)}>
-                </textarea>
+                <div
+                    className="editor-text-box"
+                    contentEditable={true}
+                    placeholder="click to add text"
+                    onInput={this.updateView.bind(this)}
+                    onBlur={this.updateView.bind(this)}
+                    style={{
+                        fontSize: `${this.state.fontSize}${this.state.fontSizeUnit}`,
+                        textAlign: `${this.state.align}`
+                    }}
+                >
+                </div>
+                {this.renderSettings()}
             </div>
         )
     }
