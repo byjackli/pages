@@ -1,34 +1,32 @@
 import React from 'react';
-import { render } from 'react-dom';
 
 export class ImageBlock extends React.PureComponent {
-    constructor(props) {
-        super(props);
-    }
+
     render() {
         let
             width = `${this.props.container.width}${this.props.container.unitWidth}`,
             height = `${this.props.container.height}${this.props.container.unitHeight}`,
             align = "hrzCC",
-            wide = "fit-content";
+            wide = "fit-content",
+            blank = 0;
 
-        this.props.container.width == 0 ? width = "fit-content" : width = width;
-        this.props.container.height == 0 ? height = "fit-content" : height = height;
+        this.props.container.width === 0 ? width = "fit-content" : blank = 0;
+        this.props.container.height === 0 ? height = "fit-content" : blank = 0;
 
-        this.props.container.align == "left" ?
+        this.props.container.align === "left" ?
             align = "hrzTL"
-            : this.props.container.align == "right"
+            : this.props.container.align === "right"
                 ? align = "hrzTR"
-                : this.props.container.align == "wide"
+                : this.props.container.align === "wide"
                     ? wide = "100%"
-                    : align = align;
+                    : blank = 0;
 
         return (<div className={`image-block ${align}`}
             style={{
                 width: width,
                 height: height
             }}>
-            <img src={this.props.imageLink} style={{ width: wide }} />
+            <img src={this.props.imageLink} style={{ width: wide }} alt={this.props.caption} blank={blank}/>
         </div>)
     }
 }
@@ -38,6 +36,7 @@ export class ImageInput extends React.PureComponent {
         super(props);
         this.state = {
             image: null,
+            caption: "",
             width: 100,
             height: 100,
             unitWidth: "px",
@@ -47,6 +46,7 @@ export class ImageInput extends React.PureComponent {
     }
 
     updateImage(e) { this.setState({ image: e.target.value }); }
+    updateCaption(e) { this.setState({ caption: e.target.value }); }
 
     updateWidth(e) { this.setState({ width: e.target.value }); }
     updateHeight(e) { this.setState({ height: e.target.value }); }
@@ -76,6 +76,7 @@ export class ImageInput extends React.PureComponent {
     render() {
         return (<div className="editor-image vrtTL">
             <input type="text" placeholder="image link" onChange={this.updateImage.bind(this)} />
+            <input type="text" placeholder="alt text" onChange={this.updateCaption.bind(this)} />
             {this.renderSettings()}
             <p>Tip: setting the width or height to 0 will fit the exact resolution of the image.</p>
             <strong>Preview:</strong>
@@ -88,6 +89,7 @@ export class ImageInput extends React.PureComponent {
                     unitHeight: this.state.unitHeight,
                     align: this.state.align,
                 }}
+                caption={this.state.caption}
             />
         </div>)
     }

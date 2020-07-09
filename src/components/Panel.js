@@ -1,6 +1,6 @@
 import React from 'react';
 import { IndexInput } from '../components/Index';
-import { TextInput, TextBlock } from '../components/Text';
+import { TextInput } from '../components/Text';
 import { ImageInput } from '../components/Image';
 import { GalleryInput } from '../components/Gallery';
 import { SocialInput } from '../components/Social';
@@ -15,9 +15,7 @@ export class Panel extends React.Component {
         }
     }
 
-    renderComponent(e, data) {
-        { this.props.updateeditor(this, data); }
-    }
+    renderComponent(e, data) { this.props.updateeditor(this, data); }
 
     render() {
         return (
