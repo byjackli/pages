@@ -1,6 +1,8 @@
 import React from 'react';
+import crypto from 'crypto';
+import salt from '../config/salt';
+import { database } from '../config/firebase';
 import { Panel, Editor } from '../components/Panel';
-import { render } from '@testing-library/react';
 
 class Admin extends React.PureComponent {
     constructor(props) {
@@ -10,8 +12,35 @@ class Admin extends React.PureComponent {
             editor: false,
             tag: null,
 
+            user: localStorage.getItem("user"),
             allow: true,
         })
+    }
+
+    componentDidMount() {
+        // this.initAdmin();
+    }
+
+    // retreives all content from page for editing.
+    initAdmin() {
+        database.collection("users").doc(this.state.user).collection("pages").get()
+            .then(snapshot => {
+                console.log("raw snapshot", snapshot)
+                if (snapshot) {
+                    let rawData = new Map();
+                    snapshot.docs.forEach(doc => { rawData.set(doc.id, doc.data()) })
+                    crypto.pbkdf2(JSON.stringify(rawData), salt, 1000, 512, "sha512", (err, derivedKey) => {
+
+                        console.info("error detected:", err);
+                        console.info("derived key:", derivedKey);
+
+                        this.setState({
+                            siteData: derivedKey,
+                        })
+                        localStorage.setItem("siteData", derivedKey);
+                    });
+                }
+            })
     }
 
     closePanel() { this.setState({ allow: true }); }
@@ -23,6 +52,11 @@ class Admin extends React.PureComponent {
         });
     }
 
+    warning(event) {
+        event.preventDefault();
+        return alert("you have unsaved changes. are you sure you want to exit without saving?");
+    }
+
     updateEditor(e, data) {
         this.setState({
             panel: !this.state.panel,
@@ -30,6 +64,12 @@ class Admin extends React.PureComponent {
 
             allow: false,
         });
+    }
+    saveEdits() {
+        localStorage.setItem("edits", JSON.stringify)
+    }
+    logout() {
+        localStorage.clear();
     }
 
     renderContent(data) {
@@ -40,10 +80,23 @@ class Admin extends React.PureComponent {
                 })
             : data = 0;
     }
+    renderSavePanel() {
+        return (<div className="save-panel hrzBT">
+            <div>
+                <strong><a href="https://byjackli.com">explore more byjackli</a></strong>&nbsp;
+                <button onClick={this.logout.bind(this)}>Log Out</button>
+            </div>
+            <div>
+                <button onClick={this.saveEdits.bind(this, "draft")}>Save</button>
+                <button onClick={this.saveEdits.bind(this, "publish")}>Publish</button>
+            </div>
+        </div>)
+    }
 
     render() {
         return (
             <>
+                {this.renderSavePanel()}
                 {
                     this.state.panel
                         ? <Panel updateeditor={this.updateEditor.bind(this)} location={this.state.tag} />
