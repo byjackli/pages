@@ -1,15 +1,15 @@
 import React from 'react';
 
 export class LinkBlock extends React.PureComponent {
-    
+
     render() {
-        return (<div className="link-block" style={{ textAlign: this.props.container.align }}>
+        return (<div className="link-block" style={{ textAlign: this.props.align }}>
             <a
-                href={this.props.container.link}
+                href={this.props.link}
                 style={{
-                    fontSize: `${this.props.container.fontSize}${this.props.container.fontSizeUnit}`
+                    fontSize: `${this.props.fontSize}${this.props.fontSizeUnit}`
                 }}>
-                {this.props.container.label}
+                {this.props.label}
             </a>
         </div>)
     }
@@ -27,11 +27,56 @@ export class LinkInput extends React.PureComponent {
         }
     }
 
-    updateFontSize(e) { this.setState({ fontSize: e.target.value }); }
-    updatefontSizeUnit(e) { this.setState({ fontSizeUnit: e.target.value }); }
-    updateLink(e) { this.setState({ link: e.target.value }); }
-    updateLabel(e) { this.setState({ label: e.target.value }); }
-    updateAlignment(e) { this.setState({ align: e.target.value }); }
+    updateFontSize(e) {
+        this.setState({ fontSize: e.target.value });
+        this.props.save(["link", {
+            fontSize: e.target.value,
+            fontSizeUnit: this.state.fontSizeUnit,
+            link: this.state.link,
+            label: this.state.label,
+            align: this.state.align
+        }]);
+    }
+    updatefontSizeUnit(e) {
+        this.setState({ fontSizeUnit: e.target.value });
+        this.props.save(["link", {
+            fontSize: this.state.fontSize,
+            fontSizeUnit: e.target.value,
+            link: this.state.link,
+            label: this.state.label,
+            align: this.state.align
+        }]);
+    }
+    updateLink(e) {
+        this.setState({ link: e.target.value });
+        this.props.save(["link", {
+            fontSize: this.state.fontSize,
+            fontSizeUnit: this.state.fontSizeUnit,
+            link: e.target.value,
+            label: this.state.label,
+            align: this.state.align
+        }]);
+    }
+    updateLabel(e) {
+        this.setState({ label: e.target.value });
+        this.props.save(["link", {
+            fontSize: this.state.fontSize,
+            fontSizeUnit: this.state.fontSizeUnit,
+            link: this.state.link,
+            label: e.target.value,
+            align: this.state.align
+        }]);
+    }
+    updateAlignment(e) {
+        this.setState({ align: e.target.value });
+        this.props.save(["link", {
+            fontSize: this.state.fontSize,
+            fontSizeUnit: this.state.fontSizeUnit,
+            link: this.state.link,
+            label: this.state.label,
+            align: e.target.value
+        }]);
+    }
 
     renderSettings() {
         return (<>
@@ -55,13 +100,13 @@ export class LinkInput extends React.PureComponent {
         return (<div className="editor-link vrtTL">
             {this.renderSettings()}
             <strong>Preview:</strong>
-            <LinkBlock container={{
-                fontSize: this.state.fontSize,
-                fontSizeUnit: this.state.fontSizeUnit,
-                link: this.state.link,
-                label: this.state.label,
-                align: this.state.align
-            }} />
+            <LinkBlock
+                fontSize={this.state.fontSize}
+                fontSizeUnit={this.state.fontSizeUnit}
+                link={this.state.link}
+                label={this.state.label}
+                align={this.state.align}
+            />
         </div>)
     }
 }

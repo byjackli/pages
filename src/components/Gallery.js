@@ -22,8 +22,19 @@ export class GalleryBlock extends React.PureComponent {
                     ))
                 }</>);
             }
-            else { return (<img className="image-preview" src={this.props.gallery} alt={""}/>); }
+            else { return (<img className="image-preview" src={this.props.gallery} alt={""} />); }
         }
+
+        else if (this.props.packedData) {
+            console.info("packedData recieved", this.props.packedData)
+            let arr = [];
+            this.props.packedData.forEach(elem => {
+                let data = elem;
+                arr.push(<img className="image-preview" src={data.image} alt={data.caption} />)
+            })
+            return arr;
+        }
+
         return null;
     }
 
@@ -41,24 +52,49 @@ export class GalleryInput extends React.PureComponent {
             galleryName: "untitled",
             gallery: null,
             captions: "",
+            packedData: "",
         }
     }
 
-    updateGalleryName(e) { this.setState({ galleryName: e.target.value }); }
-    updateGallery(e) { this.setState({ gallery: e.target.value }); }
+    updateGalleryName(e) {
+        this.setState({ galleryName: e.target.value });
+        this.props.save(["gallery", {
+            galleryName: e.target.value,
+            gallery: this.state.gallery,
+            packedData: this.state.packedData,
+        }]);
+    }
+    updateGallery(e) {
+        this.setState({ gallery: e.target.value });
+        this.props.save(["gallery", {
+            galleryName: this.state.galleryName,
+            gallery: e.target.value,
+            packedData: this.state.packedData,
+        }]);
+    }
     updateCaptions(e) {
         let
             imageid = parseInt(e.target.id.split("imageid")[1]),
             arr = JSON.parse(localStorage.getItem(this.state.galleryName)),
             data = arr[imageid];
 
+        localStorage.getItem(`captions${this.state.galleryName}`)
+            ? arr = JSON.parse(localStorage.getItem(`captions${this.state.galleryName}`))
+            : arr = JSON.parse(localStorage.getItem(this.state.galleryName));
+
         data.caption = e.target.value;
         arr[imageid] = data;
-        localStorage.setItem(this.state.galleryName, JSON.stringify(arr));
-        
+        localStorage.setItem(`captions${this.state.galleryName}`, JSON.stringify(arr));
+
+        this.setState({ packedData: JSON.stringify(arr) });
+        this.props.save(["gallery", {
+            galleryName: this.state.galleryName,
+            packedData: arr,
+        }]);
+
         console.info(imageid, data);
         console.info("updated data", data);
-        console.info("updated arr", localStorage.getItem(this.state.galleryName));
+        console.info("updated arr", localStorage.getItem(`captions${this.state.galleryName}`));
     }
 
     editView() {

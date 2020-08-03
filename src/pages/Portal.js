@@ -6,7 +6,7 @@ class Portal extends React.PureComponent {
         super(props);
         this.state = {
             register: false,
-            success: true,
+            success: false,
 
             firstName: "",
             lastName: "",

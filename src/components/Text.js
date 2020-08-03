@@ -3,7 +3,12 @@ import React from 'react';
 export class TextBlock extends React.PureComponent {
     render() {
         return (<div className="text-block">
-            <p>{this.props.text}</p>
+            <p style={{
+                fontSize: `${this.props.fontSize}${this.props.fontSizeUnit}`,
+                textAlign: this.props.align
+            }}>
+                {this.props.text}
+            </p>
         </div>)
     }
 }
@@ -51,12 +56,41 @@ export class TextInput extends React.Component {
         //     : textChange = e.target.value;
 
         this.setState({ text: textChange });
-        console.log("text change", textChange)
+        this.props.save(["text", {
+            text: textChange,
+            fontSize: this.state.fontSize,
+            fontSizeUnit: this.state.fontSizeUnit,
+            align: this.state.align
+        }]);
     }
 
-    updateFontSize(e) { this.setState({ fontSize: e.target.value }); }
-    updatefontSizeUnit(e) { this.setState({ fontSizeUnit: e.target.value }); }
-    updateAlignment(e) { this.setState({ align: e.target.value }); }
+    updateFontSize(e) {
+        this.setState({ fontSize: e.target.value });
+        this.props.save(["text", {
+            text: this.state.text,
+            fontSize: e.target.value,
+            fontSizeUnit: this.state.fontSizeUnit,
+            align: this.state.align
+        }]);
+    }
+    updatefontSizeUnit(e) {
+        this.setState({ fontSizeUnit: e.target.value });
+        this.props.save(["text", {
+            text: this.state.text,
+            fontSize: this.state.fontSize,
+            fontSizeUnit: e.target.value,
+            align: this.state.align
+        }]);
+    }
+    updateAlignment(e) {
+        this.setState({ align: e.target.value });
+        this.props.save(["text", {
+            text: this.state.text,
+            fontSize: this.state.fontSize,
+            fontSizeUnit: this.state.fontSizeUnit,
+            align: e.target.value
+        }]);
+    }
 
     renderSettings() {
         return (<>
